@@ -1,6 +1,6 @@
 from aiogram import types, Router, F
 from aiogram.fsm.context import FSMContext
-from bot.services.menu import get_user_data_menu
+from bot.keyboards.menu import get_user_data_menu
 from bot.locales.translations import translation
 from bot.database.db_utils import get_info
 

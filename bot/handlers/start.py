@@ -3,7 +3,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from bot.locales.translations import translation
 from bot.services.find_language import find_language
-from bot.services.menu import get_start_menu
+from bot.keyboards.menu import get_start_menu
 
 
 router = Router()
