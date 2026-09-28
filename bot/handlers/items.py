@@ -1,6 +1,6 @@
 from aiogram.fsm.context import FSMContext
 from aiogram import F,types,Router
-from bot.database.db_utils import get_items
+from bot.database.item_utils import get_items
 from bot.locales.translations import translation
 from bot.keyboards.menu import get_items_menu
 from bot.callbacks.pagecallback import PageCallBack

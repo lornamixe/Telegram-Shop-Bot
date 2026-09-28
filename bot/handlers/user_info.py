@@ -2,7 +2,7 @@ from aiogram import types, Router, F
 from aiogram.fsm.context import FSMContext
 from bot.keyboards.menu import get_back_to_start_menu
 from bot.locales.translations import translation
-from bot.database.db_utils import get_info
+from bot.database.user_utils import get_info
 
 
 router = Router()

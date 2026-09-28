@@ -1,4 +1,4 @@
-from bot.database.new_user import check
+from bot.database.user_utils import check
 from bot.states.user_data import Data
 from aiogram.fsm.context import FSMContext
 from aiogram import types

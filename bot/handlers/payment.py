@@ -1,7 +1,8 @@
 from aiogram import F,types,Router, Bot
 from bot.locales.translations import translation
 from aiogram.fsm.context import FSMContext
-from bot.database.db_utils import get_after_payment_data,save_sale
+from bot.database.item_utils import get_after_payment_data
+from bot.database.sale_utils import save_sale
 from bot.keyboards.menu import get_back_to_start_menu
 
 router = Router()
@@ -21,7 +22,7 @@ async def process_pre_checkout(query: types.PreCheckoutQuery, state: FSMContext)
     await query.answer(ok=True)
 
 @router.message(F.successful_payment)
-async def process_successful_paymet(message: types.Message, state: FSMContext, bot: Bot):
+async def process_successful_payment(message: types.Message, state: FSMContext, bot: Bot):
     payment = message.successful_payment
 
     data = await state.get_data()

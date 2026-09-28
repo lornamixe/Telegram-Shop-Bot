@@ -1,7 +1,7 @@
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from typing import Callable, Awaitable, Dict, Any
-from bot.database.new_user import check
+from bot.database.user_utils import check
 
 
 class LanguageMiddleware(BaseMiddleware):

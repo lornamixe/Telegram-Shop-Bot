@@ -7,19 +7,6 @@ ALLOWED_LANGUAGES = {"ru","en"}
 
 
 
-async def get_info(user_id):
-
-    async with aiosqlite.connect(DB_PATH) as conn:
-
-        cursor = await conn.cursor()
-        await cursor.execute("SELECT Register_date FROM Users WHERE UserId = ?",(user_id,))
-
-        data = await cursor.fetchall()
-        data = [x for x in data[0]]
-
-
-        return data
-
 
 async def get_items(language,item_type):
 
@@ -34,8 +21,6 @@ async def get_items(language,item_type):
         cursor = await conn.cursor()
 
         await cursor.execute(f"SELECT Name_{language}, Id FROM {item_type.title()} ORDER BY Id")
-
-
 
 
         data = await cursor.fetchall()
@@ -60,17 +45,6 @@ async def get_item_data(language,item_type,item_id):
         data = await cursor.fetchall()
 
         return [x for x in data[0]]
-
-
-async def save_sale(charge_id, amount, item_id, user_id,item_type):
-
-    async with aiosqlite.connect(DB_PATH) as conn:
-
-        cursor = await conn.cursor()
-
-        await cursor.execute("INSERT INTO Sales(Charge_id, Amount, Item_id, User_id, Item_type) VALUES (?,?,?,?,?)",(charge_id,amount,item_id, user_id,item_type))
-
-        await conn.commit()
 
 
 async def get_after_payment_data(item_id,item_type):
