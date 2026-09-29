@@ -8,7 +8,7 @@ ALLOWED_LANGUAGES = {"ru","en"}
 
 
 
-async def get_items(language,item_type):
+async def get_items(language,item_type, is_admin):
 
     if language not in ALLOWED_LANGUAGES:
         raise ValueError(f"Invalid language: {language}")
@@ -20,7 +20,13 @@ async def get_items(language,item_type):
 
         cursor = await conn.cursor()
 
-        await cursor.execute(f"SELECT Name_{language}, Id FROM {item_type.title()} ORDER BY Id")
+        if is_admin:
+
+            await cursor.execute(f"SELECT Name_{language}, Id FROM {item_type.title()} ORDER BY Id")
+
+        else:
+
+            await cursor.execute(f"SELECT Name_{language}, Id FROM {item_type.title()} WHERE Is_hidden == 0 ORDER BY Id")
 
 
         data = await cursor.fetchall()

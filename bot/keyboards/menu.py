@@ -8,12 +8,16 @@ from math import floor
 """
 start
 """
-def get_start_menu(language):
+def get_start_menu(language,admin):
     buttons = [
         [types.InlineKeyboardButton(text=translation[language]["start_catalog"], callback_data=PageCallBack(type="product",page=0,admin_panel=False).pack())],
         [types.InlineKeyboardButton(text=translation[language]["start_services"], callback_data=PageCallBack(type="service",page=0,admin_panel=False).pack())],
         [types.InlineKeyboardButton(text=translation[language]["start_user"], callback_data="user_info")]
     ]
+
+    if admin:
+        buttons += [[types.InlineKeyboardButton(text=translation[language]["admin"], callback_data = "admin_panel")]]
+
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
     return keyboard
@@ -24,7 +28,7 @@ back to start (user_data,top_up)
 
 def get_back_to_start_menu():
     buttons =[
-        [types.InlineKeyboardButton(text="⬅️", callback_data="start")]
+        [types.InlineKeyboardButton(text="🏠", callback_data="start")]
     ]
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
@@ -35,7 +39,7 @@ def get_back_to_start_menu():
 catalog/service
 """
 
-def get_items_menu(language,items,item_type,page,admin_panel):
+def get_items_menu(items,item_type,page,admin_panel):
 
 
 

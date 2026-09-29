@@ -15,7 +15,7 @@ async def items_list(call: types.CallbackQuery, state: FSMContext, callback_data
 
     type, page, admin_panel = callback_data.type, callback_data.page, callback_data.admin_panel
 
-    items = await get_items(language,callback_data.type)
+    items = await get_items(language,callback_data.type,admin_panel)
 
 
-    await call.message.edit_text(text = translation[language][type], reply_markup=get_items_menu(language,items,type,page,admin_panel))
+    await call.message.edit_text(text = translation[language][type], reply_markup=get_items_menu(items,type,page,admin_panel))
