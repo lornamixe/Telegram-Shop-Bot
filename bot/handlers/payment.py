@@ -16,7 +16,7 @@ async def process_pre_checkout(query: types.PreCheckoutQuery, state: FSMContext)
     item_id, user_id, item_type = query.invoice_payload.split(":")
 
     if int(user_id)!=query.from_user.id:
-        await query.answer(ok=False, error_message=translation[language]["error_message"])
+        await query.answer(ok=False, error_message=translation[language]["purchase_error_message"])
         return
 
     await query.answer(ok=True)
@@ -28,6 +28,7 @@ async def process_successful_payment(message: types.Message, state: FSMContext, 
     data = await state.get_data()
 
     message = data.get("payment_message")
+    language = data.get("lang")
 
     item_id, user_id, item_type = payment.invoice_payload.split(":")
 
@@ -36,7 +37,7 @@ async def process_successful_payment(message: types.Message, state: FSMContext, 
 
     after_payment_text = await get_after_payment_data(item_id,item_type)
 
-    await bot.edit_message_text(text=f"Successfuly!\n\n{after_payment_text}",reply_markup=get_back_to_start_menu(),chat_id=message[1],message_id=message[0],parse_mode='HTML')
+    await bot.edit_message_text(text=f"{translation[language]['success']}\n\n{after_payment_text}",reply_markup=get_back_to_start_menu(),chat_id=message[1],message_id=message[0],parse_mode='HTML')
 
 
 

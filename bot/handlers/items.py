@@ -4,6 +4,8 @@ from bot.database.item_utils import get_items
 from bot.locales.translations import translation
 from bot.keyboards.menu import get_items_menu
 from bot.callbacks.pagecallback import PageCallBack
+from bot.database.sale_utils import get_purchased_list
+
 
 router = Router()
 
@@ -13,9 +15,14 @@ async def items_list(call: types.CallbackQuery, state: FSMContext, callback_data
     data = await state.get_data()
     language = data.get("lang")
 
-    type, page, admin_panel = callback_data.type, callback_data.page, callback_data.admin_panel
+    type, page, admin_edit = callback_data.type, callback_data.page, callback_data.admin_edit
 
-    items = await get_items(language,callback_data.type,admin_panel)
+    if type in ["service","product"]:
+
+        items = await get_items(language,callback_data.type,admin_edit)
+
+    else:
+        items = await get_purchased_list(True, call.from_user.id)
 
 
-    await call.message.edit_text(text = translation[language][type], reply_markup=get_items_menu(items,type,page,admin_panel))
+    await call.message.edit_text(text = translation[language][type], reply_markup=get_items_menu(items,type,page,admin_edit))
