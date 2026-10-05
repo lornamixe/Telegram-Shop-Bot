@@ -2,7 +2,7 @@ from aiogram import BaseMiddleware,Bot,types
 from aiogram.types import TelegramObject
 from typing import Callable, Awaitable, Dict, Any
 from bot.database.user_utils import get_admin_status
-from bot.states.user_data import Data
+
 
 class AdminMiddleware(BaseMiddleware):
 
@@ -17,7 +17,6 @@ class AdminMiddleware(BaseMiddleware):
         if fsm_data.get("admin") is None:
             admin = await get_admin_status(event.from_user.id)
 
-            await state.set_state(Data.admin)
             await state.update_data(admin=admin)
 
         return await handler(event, data)

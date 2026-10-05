@@ -18,7 +18,9 @@ class LanguageMiddleware(BaseMiddleware):
         if isinstance(event, types.CallbackQuery) and event.data in ("ru", "en"):
             return await handler(event,data)
 
-
+        if isinstance(event, types.CallbackQuery):
+            await state.set_state(None)
+            await state.update_data(waiting=None)
 
         if fsm_data.get("lang") is None:
             language = await check(event.from_user.id)
