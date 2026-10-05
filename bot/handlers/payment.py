@@ -1,9 +1,12 @@
 from aiogram import F,types,Router, Bot
 from bot.locales.translations import translation
 from aiogram.fsm.context import FSMContext
-from bot.database.item_utils import get_after_payment_data
+from bot.database.item_utils import get_delivery_content,hide_after_sale
 from bot.database.sale_utils import save_sale
 from bot.keyboards.menu import get_back_to_start_menu
+
+
+
 
 router = Router()
 
@@ -27,17 +30,21 @@ async def process_successful_payment(message: types.Message, state: FSMContext, 
 
     data = await state.get_data()
 
-    message = data.get("payment_message")
+    message_data = data.get("payment_message")
     language = data.get("lang")
 
     item_id, user_id, item_type = payment.invoice_payload.split(":")
 
     await save_sale(charge_id=payment.telegram_payment_charge_id,amount=payment.total_amount,item_id=item_id,user_id=user_id,item_type=item_type)
+    await hide_after_sale(item_id,item_type)
+
+    delivery_content = await get_delivery_content(language,item_id,item_type)
+
+    await bot.edit_message_text(text=f"{translation[language]['success']}\n\n{delivery_content}",reply_markup=get_back_to_start_menu(),chat_id=message_data[1],message_id=message_data[0],parse_mode='HTML')
 
 
-    after_payment_text = await get_after_payment_data(item_id,item_type)
-
-    await bot.edit_message_text(text=f"{translation[language]['success']}\n\n{after_payment_text}",reply_markup=get_back_to_start_menu(),chat_id=message[1],message_id=message[0],parse_mode='HTML')
-
-
+    try:
+        await message.delete()
+    except Exception:
+        pass
 

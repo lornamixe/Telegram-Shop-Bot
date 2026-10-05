@@ -4,9 +4,8 @@ from bot.callbacks.itemcallback import ItemCallBack
 from bot.database.item_utils import get_item_data
 from bot.locales.translations import translation
 from bot.keyboards.menu import get_item_card_menu,get_sold_item_card_menu
-from bot.states.user_data import Data
 from bot.database.sale_utils import get_puchased_info
-from bot.database.item_utils import get_after_payment_data
+from bot.database.item_utils import get_delivery_content
 
 router = Router()
 
@@ -21,7 +20,6 @@ async def show_item_card(call: types.CallbackQuery, state: FSMContext, callback_
 
     #purchase window
     if callback_data.type in ["service","product"]:
-        await state.set_state(Data.payment_message)
         await state.update_data(payment_message = [call.message.message_id,call.message.chat.id])
         message_text, keyboard = await build_item_card(call, language, callback_data)
     else:
@@ -30,7 +28,7 @@ async def show_item_card(call: types.CallbackQuery, state: FSMContext, callback_
 
 
 
-    await call.message.edit_text(text=message_text,reply_markup=keyboard)
+    await call.message.edit_text(text=message_text,reply_markup=keyboard, parse_mode="HTML")
 
 async def build_item_card(call, language: str, callback_data: ItemCallBack):
 
@@ -64,9 +62,9 @@ async def build_sold_item_card(call, language: str, callback_data: ItemCallBack)
 
     else:
 
-        after_payment = await get_after_payment_data(item_id,item_type)
+        delivery_content = await get_delivery_content(language,item_id,item_type)
 
-        text = f"{item_name}\n\n{item_description}\n\n{translation[language]['after_payment_info']}\n{after_payment}"
+        text = f"{item_name}\n\n{item_description}\n\n{translation[language]['delivery_content']}\n{delivery_content}"
     return text, keyboard
 
 

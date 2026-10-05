@@ -21,9 +21,9 @@ translation = {"ru":{"start":"Добро пожаловать в бота.",
                      "yes":"Да",
                      "no":"Нет",
                      "refunded":"Возвращён",
-                     "after_payment_info":"Информация после покупки",
                      "admin_sales":"Продажи",
-                     "user_sales":"Покупки"
+                     "user_sales":"Покупки",
+                     "delivery_content":"Содержание заказа"
                      },
                "en":{"start":"Welcome to the bot.",
                      "start_catalog":"✨Catalog",
@@ -45,7 +45,7 @@ translation = {"ru":{"start":"Добро пожаловать в бота.",
                      "yes":"Yes",
                      "no":"No",
                      "refunded":"Refunded",
-                     "after_payment_info":"Info after payment",
                      "admin_sales":"Sales",
-                     "user_sales":"Purchases"
+                     "user_sales":"Purchases",
+                     "delivery_content":"Delivery content"
                      }}
