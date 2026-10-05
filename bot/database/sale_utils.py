@@ -10,7 +10,7 @@ async def save_sale(charge_id, amount, item_id, user_id,item_type):
 
         cursor = await conn.cursor()
 
-        await cursor.execute("INSERT OR IGNORE INTO Sales(Charge_id, Amount, Item_id, Item_type, User_id, Status) VALUES (?,?,?,?,?)",(charge_id,amount,item_id,item_type,user_id,1))
+        await cursor.execute("INSERT OR IGNORE INTO Sales(Charge_id, Amount, Item_id, Item_type, User_id) VALUES (?,?,?,?,?)",(charge_id,amount,item_id,item_type,user_id))
 
         await conn.commit()
 
@@ -24,11 +24,11 @@ async def get_purchased_list(admin, user_id):
 
         if admin:
 
-            await cursor.execute("SELECT Date, Id FROM Sales")
+            await cursor.execute("SELECT Date, Id FROM Sales ORDER BY Id DESC")
 
         else:
 
-            await cursor.execute("SELECT Date, Id FROM Sales WHERE User_id = ?",(user_id,))
+            await cursor.execute("SELECT Date, Id FROM Sales WHERE User_id = ? ORDER BY Id DESC",(user_id,))
 
         data = await cursor.fetchall()
 
