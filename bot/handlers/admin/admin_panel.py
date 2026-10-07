@@ -8,6 +8,7 @@ router = Router()
 
 @router.callback_query(F.data=="admin_panel")
 async def admin_panel(call: types.CallbackQuery, state: FSMContext):
+    await call.answer()
 
     data = await state.get_data()
     language = data.get("lang")

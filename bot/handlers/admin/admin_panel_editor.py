@@ -6,6 +6,7 @@ from bot.database.item_utils import get_item_key,get_item_data,set_item_key
 from bot.keyboards.menu import get_admin_editor_category_choice_menu,get_admin_editor_choice_menu,get_admin_editor_main_menu,get_admin_editor_visibility_menu
 from bot.states.user_data import Data
 import asyncio
+from aiogram.exceptions import TelegramBadRequest
 
 
 router = Router()
@@ -42,9 +43,7 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
         item_lang = "_ru" if tab==0 else "_en"
 
         if key=="preview":
-            item_description, item_name, item_cost = await get_item_data(item_lang[1:],item_type,item_id)
-
-            text = f"{item_name}\n\n{item_description}\n\n{translation[language]['cost']}{item_cost}"
+            text = await build_preview(language, item_id, item_type, tab)
 
             keyboard = get_admin_editor_main_menu(language,item_id,item_type,tab)
 
@@ -97,7 +96,7 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
         await call.message.edit_text(text=text,reply_markup=keyboard)
         return
 
-    await state.update_data(edit_data = [call.message.message_id,item_id,item_type])
+    await state.update_data(edit_data = [call.message.message_id,item_id,item_type,tab])
 
     await call.message.edit_text(text=text,reply_markup=call.message.reply_markup)
 
@@ -105,34 +104,49 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
 @router.message(Data.waiting, F.text)
 async def edit_data(message: types.Message, state: FSMContext, bot: Bot):
 
+
     data = await state.get_data()
-    tab = data.get("waiting_for")
-    message_id,item_id,item_type = data.get("edit_data")
+    key = data.get("waiting_for")
+    message_id,item_id,item_type,tab = data.get("edit_data")
     language = data.get("lang")
 
     await message.delete()
 
-    if tab=="Cost":
-        if not message.text.isdecimal():
+    if key=="Cost":
+        if not message.text.isdecimal() or int(message.text)<1:
 
             msg = await bot.send_message(chat_id=message.chat.id,text=translation[language]["not_numeric"])
 
             await asyncio.sleep(4)
             await msg.delete()
             return
-    elif tab in ["Name_ru","Name_en"]:
+    elif key in ["Name_ru","Name_en"]:
         if len(message.text)>14:
             msg = await bot.send_message(chat_id=message.chat.id, text=translation[language]["title_error"])
 
             await asyncio.sleep(4)
             await msg.delete()
             return
-    elif tab in ["Description_en","Description_ru"]:
+    elif key in ["Description_en","Description_ru"]:
         if len(message.text)>254:
             msg = await bot.send_message(chat_id=message.chat.id, text=translation[language]["description_error"])
 
             await asyncio.sleep(4)
             await msg.delete()
             return
-    await state.clear()
-    await set_item_key(item_id,item_type,tab,message.text)
+    await state.set_state(None)
+    await set_item_key(item_id,item_type,key,message.text)
+
+    text = await build_preview(language, item_id, item_type, tab)
+    keyboard = get_admin_editor_main_menu(language,item_id,item_type,tab)
+    try:
+        await bot.edit_message_text(text=text,reply_markup=keyboard,chat_id=message.chat.id,message_id=message_id)
+    except TelegramBadRequest:
+        pass
+
+
+async def build_preview(language,item_id,item_type,tab):
+    item_lang = "ru" if tab==0 else "en"
+
+    description, name, cost = await get_item_data(item_lang,item_type,item_id)
+    return f"{name}\n\n{description}\n\n{translation[language]['cost']}{cost}"

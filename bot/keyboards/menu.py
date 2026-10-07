@@ -3,7 +3,7 @@ from bot.locales.translations import translation
 from bot.callbacks.itemcallback import ItemCallBack
 from bot.callbacks.purchasecallback import PurchaseCallBack
 from bot.callbacks.pagecallback import PageCallBack
-from math import floor
+from math import ceil
 from bot.callbacks.refundcallback import RefundCallBack
 from bot.callbacks.itemeditcallback import ItemEditCallBack
 
@@ -49,7 +49,7 @@ def get_items_menu(items,item_type,page,admin_panel):
     items_list = [x for idx,x in enumerate(items) if page*5<=idx<(page+1)*5]
 
     n = len(items)
-    k = floor(n/5)
+    k = ceil(n/5)-1
 
 
 
@@ -57,7 +57,7 @@ def get_items_menu(items,item_type,page,admin_panel):
         # Adding a list of items in current page.
         buttons = [[types.InlineKeyboardButton(text=f"{item_name}",callback_data=ItemCallBack(page=page,type=item_type,id=item_id).pack())] for item_name, item_id in items_list]
     else:
-        buttons = [[types.InlineKeyboardButton(text=f"{item_name}", callback_data=ItemEditCallBack(id=item_id,tab=-1,key="None",type=item_type,language="None").pack())] for item_name, item_id in items_list]
+        buttons = [[types.InlineKeyboardButton(text=f"{item_name}", callback_data=ItemEditCallBack(id=item_id,tab=-1,key="None",type=item_type).pack())] for item_name, item_id in items_list]
     page_button = [[]]
 
     if n>5:
@@ -162,9 +162,9 @@ def get_admin_editor_category_choice_menu(language):
 def get_admin_editor_choice_menu(language,item_id,item_type):
 
     buttons = [
-        [types.InlineKeyboardButton(text=translation[language]["russian"], callback_data=ItemEditCallBack(tab=0,key="preview",id=item_id,type=item_type,language="ru").pack())],
-        [types.InlineKeyboardButton(text=translation[language]["english"], callback_data=ItemEditCallBack(tab=1,key="preview",id=item_id,type=item_type,language="en").pack())],
-        [types.InlineKeyboardButton(text=translation[language]["visibility"], callback_data=ItemEditCallBack(tab=2,key="preview",id=item_id,type=item_type,language="None").pack())],
+        [types.InlineKeyboardButton(text=translation[language]["russian"], callback_data=ItemEditCallBack(tab=0,key="preview",id=item_id,type=item_type).pack())],
+        [types.InlineKeyboardButton(text=translation[language]["english"], callback_data=ItemEditCallBack(tab=1,key="preview",id=item_id,type=item_type).pack())],
+        [types.InlineKeyboardButton(text=translation[language]["visibility"], callback_data=ItemEditCallBack(tab=2,key="preview",id=item_id,type=item_type).pack())],
         [types.InlineKeyboardButton(text="⬅️",callback_data=PageCallBack(page=0, type=item_type, admin_edit=True).pack())]
     ]
 

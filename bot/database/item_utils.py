@@ -1,7 +1,7 @@
 import aiosqlite
 from config import DB_PATH
 
-ALLOWED_TABLES = {'product','service','sales'}
+ALLOWED_TABLES = {'product','service'}
 ALLOWED_LANGUAGES = {"ru","en"}
 ALLOWED_KEYS = {"Id","Cost","Name_ru","Description_ru","Name_en","Description_en","Delivery_content_ru","Delivery_content_en", "Hide_after_sale", "Is_hidden"}
 
