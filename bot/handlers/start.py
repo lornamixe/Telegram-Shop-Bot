@@ -27,6 +27,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
 
 @router.callback_query(F.data=="start")
 async def call_start(call: types.CallbackQuery, state: FSMContext):
+    await call.answer()
 
     data = await state.get_data()
 

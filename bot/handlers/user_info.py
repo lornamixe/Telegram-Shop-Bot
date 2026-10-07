@@ -9,6 +9,7 @@ router = Router()
 
 @router.callback_query(F.data=="user_info")
 async def user_info(call: types.CallbackQuery, state: FSMContext):
+    await call.answer()
 
     data = await state.get_data()
     language = data.get("lang")
@@ -17,4 +18,4 @@ async def user_info(call: types.CallbackQuery, state: FSMContext):
 
     user_data = await get_info(call.from_user.id)
 
-    await call.message.edit_text(text=translation[language]["user_info"].format(Language = language, Date = user_data[0]),reply_markup=keyboard,parse_mode="HTML")
+    await call.message.edit_text(text=translation[language]["user_info"].format(Language = language, Date = user_data[0]),reply_markup=keyboard)
