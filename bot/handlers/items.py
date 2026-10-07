@@ -11,6 +11,7 @@ router = Router()
 
 @router.callback_query(PageCallBack.filter())
 async def items_list(call: types.CallbackQuery, state: FSMContext, callback_data: PageCallBack):
+    await call.answer()
 
     data = await state.get_data()
     language = data.get("lang")
@@ -22,7 +23,8 @@ async def items_list(call: types.CallbackQuery, state: FSMContext, callback_data
         items = await get_items(language,callback_data.type,admin_edit)
 
     else:
-        items = await get_purchased_list(True, call.from_user.id)
+        admin = type=="admin_sales"
+        items = await get_purchased_list(admin, call.from_user.id)
 
 
     await call.message.edit_text(text = translation[language][type], reply_markup=get_items_menu(items,type,page,admin_edit))

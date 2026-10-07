@@ -34,7 +34,7 @@ async def get_purchased_list(admin, user_id):
 
         return [x for x in data]
 
-async def get_puchased_info(sale_id):
+async def get_purchased_info(sale_id):
 
     async with aiosqlite.connect(DB_PATH) as conn:
 
@@ -46,17 +46,6 @@ async def get_puchased_info(sale_id):
 
         return [x for x in data[0]]
 
-async def get_info_for_refund(sale_id):
-
-    async with aiosqlite.connect(DB_PATH) as conn:
-
-        cursor = await conn.cursor()
-
-        await cursor.execute("SELECT Charge_id, User_id FROM Sales WHERE Id = ?", (sale_id,))
-
-        data = await cursor.fetchall()
-
-        return [x for x in data[0]]
 
 async def set_refunded_status(sale_id):
 
