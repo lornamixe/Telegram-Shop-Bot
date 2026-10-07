@@ -5,7 +5,9 @@ from bot.handlers.item_data import router as item_data_router
 from bot.handlers.items import router as items_router
 from bot.handlers.payment import router as payment_router
 from bot.handlers.refund import router as refund_router
-from bot.handlers.admin_panel import router as admin_panel_router
+from bot.handlers.admin.admin_panel import router as admin_panel_router
+from bot.handlers.admin.admin_panel_editor import router as admin_panel_editor_router
+
 
 all_routers = [
     start_router,
@@ -15,5 +17,6 @@ all_routers = [
     items_router,
     payment_router,
     refund_router,
-    admin_panel_router
+    admin_panel_router,
+    admin_panel_editor_router
 ]

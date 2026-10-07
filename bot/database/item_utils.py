@@ -101,7 +101,7 @@ async def get_item_key(item_id,item_type,key):
 
         return data[0]
 
-async def set_item_key(item_id,item_type,key):
+async def set_item_key(item_id,item_type,key,data):
 
 
     if item_type not in ALLOWED_TABLES:
@@ -117,4 +117,14 @@ async def set_item_key(item_id,item_type,key):
 
         if key in ["Is_hidden","Hide_after_sale"]:
             await cursor.execute(f"UPDATE {item_type.title()} SET {key} = NOT {key} WHERE Id = ?",(item_id,))
+        else:
+            await cursor.execute(f"UPDATE {item_type.title()} SET {key} = ? WHERE Id = ?", (data,item_id))
+
+        await conn.commit()
+
+
+
+
+
+
 
