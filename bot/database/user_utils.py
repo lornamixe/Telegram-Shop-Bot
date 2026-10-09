@@ -21,7 +21,10 @@ async def save(user_id,language):
     async with aiosqlite.connect(DB_PATH) as conn:
 
         cursor = await conn.cursor()
-        await cursor.execute("INSERT OR IGNORE INTO Users (User_id,Language) VALUES (?,?)", (user_id,language))
+        await cursor.execute(
+            "INSERT INTO Users (User_id,Language) VALUES (?,?) "
+            "ON CONFLICT(User_id) DO UPDATE SET Language = excluded.Language",
+             (user_id,language))
 
         await conn.commit()
 

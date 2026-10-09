@@ -2,11 +2,12 @@ from aiogram import F,types,Router,Bot
 from bot.callbacks.itemeditcallback import ItemEditCallBack
 from aiogram.fsm.context import FSMContext
 from bot.locales.translations import translation
-from bot.database.item_utils import get_item_key,get_item_data,set_item_key
-from bot.keyboards.menu import get_admin_editor_category_choice_menu,get_admin_editor_choice_menu,get_admin_editor_main_menu,get_admin_editor_visibility_menu
+from bot.database.item_utils import get_item_key,get_item_data,set_item_key,get_items
+from bot.keyboards.menu import get_admin_editor_category_choice_menu,get_admin_editor_choice_menu,get_admin_editor_main_menu,get_admin_editor_visibility_menu,get_items_menu
 from bot.states.user_data import Data
 import asyncio
 from aiogram.exceptions import TelegramBadRequest
+from bot.database.item_utils import create_item
 
 
 router = Router()
@@ -95,6 +96,16 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
 
         await call.message.edit_text(text=text,reply_markup=keyboard)
         return
+    elif tab==3:
+        await create_item(item_type)
+
+        items = await get_items(language,item_type,True)
+
+        keyboard = get_items_menu(items,item_type,item_id,True)
+
+        await call.message.edit_text(text=translation[language][item_type],reply_markup=keyboard)
+        return
+
 
     await state.update_data(edit_data = [call.message.message_id,item_id,item_type,tab])
 

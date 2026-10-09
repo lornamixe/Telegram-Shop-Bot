@@ -122,8 +122,19 @@ async def set_item_key(item_id,item_type,key,data):
 
         await conn.commit()
 
+async def create_item(item_type):
+
+    if item_type not in ALLOWED_TABLES:
+        raise ValueError(f"Invalid table: {item_type}")
 
 
+    async with aiosqlite.connect(DB_PATH) as conn:
+
+        cursor = await conn.cursor()
+
+        await cursor.execute(f"INSERT INTO {item_type.title()} DEFAULT VALUES")
+
+        await conn.commit()
 
 
 
