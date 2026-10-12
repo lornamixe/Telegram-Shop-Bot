@@ -50,7 +50,8 @@ def get_items_menu(items,item_type,page,admin_panel):
 
     n = len(items)
     k = ceil(n/5)-1
-
+    if k<0:
+        k=0
 
 
     if not admin_panel:
@@ -58,7 +59,10 @@ def get_items_menu(items,item_type,page,admin_panel):
         buttons = [[types.InlineKeyboardButton(text=f"{item_name}",callback_data=ItemCallBack(page=page,type=item_type,id=item_id).pack())] for item_name, item_id in items_list]
     else:
         buttons = [[types.InlineKeyboardButton(text=f"{item_name}", callback_data=ItemEditCallBack(id=item_id,tab=-1,key="None",type=item_type).pack())] for item_name, item_id in items_list]
-        buttons.append([types.InlineKeyboardButton(text="➕", callback_data=ItemEditCallBack(id=page,tab=3,key="None",type=item_type).pack())])
+
+        page_after_creation = k if len(items_list)<5 else k+1
+
+        buttons.append([types.InlineKeyboardButton(text="➕",callback_data=ItemEditCallBack(id=page_after_creation, tab=3, key="None",type=item_type).pack())])
     page_button = [[]]
 
     if n>5:
