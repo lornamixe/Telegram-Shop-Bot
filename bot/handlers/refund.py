@@ -30,5 +30,5 @@ async def refund(call: types.CallbackQuery,state: FSMContext, callback_data: Ref
     await set_refunded_status(callback_data.id)
 
     keyboard = get_sold_item_card_menu(language,True,callback_data.id,callback_data.page,1)
-    await call.message.edit_text(text=translation[language]["success"], reply_markup=keyboard)
+    await call.message.edit_text(text=translation[language]["refund_success"], reply_markup=keyboard)
 

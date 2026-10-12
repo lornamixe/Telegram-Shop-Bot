@@ -94,7 +94,7 @@ async def get_item_card_menu(language,item_cost,item_id,item_type,item_name,item
 
 
     buttons = [
-        [types.InlineKeyboardButton(text=translation[language]["purchase"]+str(item_cost)+"⭐️",url=purchase_link)],
+        [types.InlineKeyboardButton(text=translation[language]["purchase"].format(Cost=item_cost),url=purchase_link)],
         [types.InlineKeyboardButton(text="⬅️",callback_data=PageCallBack(page=page,type=item_type,admin_edit=False).pack())]
     ]
 
@@ -180,7 +180,7 @@ def get_admin_editor_main_menu(language,item_id,item_type,tab):
         [types.InlineKeyboardButton(text=translation[language]["title"],callback_data=ItemEditCallBack(tab=tab, key=f"Name",id=item_id,type=item_type).pack()),
          types.InlineKeyboardButton(text=translation[language]["description"], callback_data=ItemEditCallBack(tab=tab, key=f"Description",id=item_id,type=item_type).pack()),
          types.InlineKeyboardButton(text=translation[language]["delivery_content"], callback_data=ItemEditCallBack(tab=tab, key=f"Delivery_content",id=item_id,type=item_type).pack())],
-        [types.InlineKeyboardButton(text=translation[language]["cost"], callback_data=ItemEditCallBack(tab=tab, key=f"Cost",id=item_id,type=item_type).pack())],
+        [types.InlineKeyboardButton(text=translation[language]["cost_button"], callback_data=ItemEditCallBack(tab=tab, key=f"Cost",id=item_id,type=item_type).pack())],
         [types.InlineKeyboardButton(text="⬅️",callback_data=ItemEditCallBack(id=item_id,tab=-1,key="None",type=item_type).pack())]
     ]
 

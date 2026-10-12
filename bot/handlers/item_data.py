@@ -36,7 +36,7 @@ async def build_item_card(call, language: str, callback_data: ItemCallBack):
 
     item_description,item_name,item_cost = await get_item_data(language, item_type, item_id)
 
-    text = f"{item_name}\n\n{item_description}\n\n{translation[language]['cost']}{item_cost}"
+    text = f"{item_name}\n\n{item_description}\n\n{translation[language]['cost'].format(Cost=item_cost)}"
 
     keyboard = await get_item_card_menu(language, item_cost, item_id, item_type, item_name, item_description, item_page,call)
 
@@ -58,7 +58,7 @@ async def build_sold_item_card(call, language: str, callback_data: ItemCallBack)
     item_description, item_name, item_cost = await get_item_data(language, item_type, item_id)
 
     if admin:
-        text = f"{item_name}\n\n{translation[language]['cost']}{item_cost}\n\n{translation[language]['date']} - {date}\n\n{translation[language]['refunded']} - {translation[language][refunded]}"
+        text = f"{item_name}\n\n{translation[language]['cost'].format(Cost=item_cost)}\n\n{translation[language]['date']} - {date}\n\n{translation[language]['refunded']} - {translation[language][refunded]}"
 
     else:
 

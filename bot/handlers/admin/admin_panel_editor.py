@@ -76,7 +76,7 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
         elif key=="Cost":
             item_cost = await get_item_key(item_id,item_type,key)
 
-            text = f"{translation[language]['cost']}{item_cost}: \n\n{translation[language]['edit_text']}"
+            text = f"{translation[language]['cost'].format(Cost=item_cost)}\n\n{translation[language]['edit_text']}"
 
             await state.set_state(Data.waiting)
             await state.update_data(waiting_for = "Cost")
@@ -91,7 +91,7 @@ async def editor(call: types.CallbackQuery, state: FSMContext, callback_data: It
 
 
         keyboard = get_admin_editor_visibility_menu(language,item_id,item_type,tab,hide_after_sale,is_hidden)
-        text = '123'
+        text = translation[language]["visibility_text"]
 
 
         await call.message.edit_text(text=text,reply_markup=keyboard)
@@ -160,4 +160,4 @@ async def build_preview(language,item_id,item_type,tab):
     item_lang = "ru" if tab==0 else "en"
 
     description, name, cost = await get_item_data(item_lang,item_type,item_id)
-    return f"{name}\n\n{description}\n\n{translation[language]['cost']}{cost}"
+    return f"{name}\n\n{description}\n\n{translation[language]['cost'].format(Cost=cost)}"

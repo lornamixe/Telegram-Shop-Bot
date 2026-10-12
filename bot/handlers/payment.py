@@ -46,6 +46,6 @@ async def process_successful_payment(message: types.Message, state: FSMContext, 
 
     delivery_content = await get_delivery_content(language,item_id,item_type)
 
-    await bot.send_message(text=f"{translation[language]['success']}\n\n{delivery_content or ''}",reply_markup=get_back_to_start_menu(),chat_id=message.chat.id)
+    await bot.send_message(text=f"{translation[language]['payment_success']}\n\n{delivery_content or ''}",reply_markup=get_back_to_start_menu(),chat_id=message.chat.id)
 
 

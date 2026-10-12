@@ -15,4 +15,4 @@ async def admin_panel(call: types.CallbackQuery, state: FSMContext):
 
     keyboard = get_admin_panel_menu(language)
 
-    await call.message.edit_text(text=translation[language]["admin"], reply_markup=keyboard)
+    await call.message.edit_text(text=translation[language]["admin_header"], reply_markup=keyboard)
