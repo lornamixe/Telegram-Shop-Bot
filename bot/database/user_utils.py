@@ -54,4 +54,4 @@ async def get_admin_status(user_id):
 
         data = await cursor.fetchone()
 
-        return data[0]
+        return data[0] if data else 0
