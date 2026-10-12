@@ -139,7 +139,7 @@ async def edit_data(message: types.Message, state: FSMContext, bot: Bot):
             await msg.delete()
             return
     elif key in ["Description_en","Description_ru"]:
-        if len(message.text)>254:
+        if len(message.text)>255:
             msg = await bot.send_message(chat_id=message.chat.id, text=translation[language]["description_error"])
 
             await asyncio.sleep(4)

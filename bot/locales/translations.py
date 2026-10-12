@@ -63,7 +63,7 @@ translation = {
         "edit_text": "Отправьте новое значение одним сообщением. Чтобы отменить, просто нажмите любую кнопку.",
         "not_numeric": "Введите цену целым числом больше нуля, например 100.",
         "title_error": "Слишком длинное название: максимум 14 символов.",
-        "description_error": "Слишком длинное описание: максимум 254 символа.",
+        "description_error": "Слишком длинное описание: максимум 255 символа.",
     },
 
     "en": {
@@ -130,6 +130,6 @@ translation = {
         "edit_text": "Send the new value as a single message. To cancel, just tap any button.",
         "not_numeric": "Enter the price as a whole number greater than zero, e.g. 100.",
         "title_error": "Title is too long: 14 characters max.",
-        "description_error": "Description is too long: 254 characters max.",
+        "description_error": "Description is too long: 255 characters max.",
     },
 }
