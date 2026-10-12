@@ -5,12 +5,19 @@ from bot.locales.translations import translation
 from bot.keyboards.menu import get_items_menu
 from bot.callbacks.pagecallback import PageCallBack
 from bot.database.sale_utils import get_purchased_list
+from bot.database.user_utils import get_admin_status
 
 
 router = Router()
 
 @router.callback_query(PageCallBack.filter())
 async def items_list(call: types.CallbackQuery, state: FSMContext, callback_data: PageCallBack):
+
+    if (callback_data.admin_edit or callback_data.type == "admin_sales") and not await get_admin_status(call.from_user.id):
+        await call.answer()
+        return
+
+
     await call.answer()
 
     data = await state.get_data()

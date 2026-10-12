@@ -6,6 +6,7 @@ from bot.locales.translations import translation
 from bot.keyboards.menu import get_item_card_menu,get_sold_item_card_menu
 from bot.database.sale_utils import get_purchased_info
 from bot.database.item_utils import get_delivery_content
+from bot.database.user_utils import get_admin_status
 
 router = Router()
 
@@ -25,8 +26,8 @@ async def show_item_card(call: types.CallbackQuery, state: FSMContext, callback_
     else:
         message_text, keyboard = await build_sold_item_card(call, language, callback_data)
 
-
-
+    if message_text is None:  # access denied
+        return
 
     await call.message.edit_text(text=message_text,reply_markup=keyboard)
 
@@ -51,6 +52,12 @@ async def build_sold_item_card(call, language: str, callback_data: ItemCallBack)
 
     admin = callback_data.type == "admin_sales"
 
+    if admin:
+        if not await get_admin_status(call.from_user.id):
+            return None, None
+    elif user_id != call.from_user.id:
+        return None, None
+
     refunded = "yes" if status==1 else "no"
 
     keyboard = get_sold_item_card_menu(language,admin,id,item_page,status)
@@ -59,7 +66,6 @@ async def build_sold_item_card(call, language: str, callback_data: ItemCallBack)
 
     if admin:
         text = f"{item_name}\n\n{translation[language]['cost'].format(Cost=item_cost)}\n\n{translation[language]['date']} - {date}\n\n{translation[language]['refunded']} - {translation[language][refunded]}"
-
     else:
 
         delivery_content = await get_delivery_content(language,item_id,item_type)
